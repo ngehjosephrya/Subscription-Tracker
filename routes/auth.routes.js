@@ -1,5 +1,7 @@
 import {Router} from 'express';
 import { signUp, signIn, signOut } from '../controllers/auth.controller.js';
+import authenticateToken from '../middlewares/authToken.middleware.js';
+import { checkBlacklist } from '../middlewares/checkBlacklisted.middleware.js';
 
 const authRouter = Router();
 
@@ -10,6 +12,6 @@ authRouter.post('/sign-up', signUp);
 authRouter.post('/sign-in', signIn);
 
 //path: /api/v1/auth/sign-out (POST)
-authRouter.post('/sign-out', signOut);
+authRouter.post('/sign-out',authenticateToken, checkBlacklist, signOut);
 
 export default authRouter;
